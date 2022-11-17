@@ -1,0 +1,34 @@
+#Install starting Applications
+sudo apt-get update
+#VS
+snap install code --classic
+#GIT
+sudo apt-get install git
+git --version
+#OPENCV
+sudo apt-get install libopencv-dev python3-opencv
+python3 -c "import cv2; print(cv2.__version__)"
+pkg-config --modversion opencv4
+pkg-config --cflags --libs
+#ROS Noetic
+#Installation ROS Base
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt install curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt install ros-noetic-desktop-full
+source /opt/ros/noetic/setup.bash
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential -y
+sudo rosdep init
+rosdep update
+#Setting up Workspace Ros... Tutorial 1
+#catkin build
+sudo apt-get install python3-catkin-tools
+printenv | grep ROS
+source /opt/ros/noetic/setup.bash
+mkdir -p ~/catkin_ws/src && cd ~/catkin_ws/
+catkin build
+source devel/setup.bash
+echo $ROS_PACKAGE_PATH
