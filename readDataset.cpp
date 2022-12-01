@@ -26,6 +26,16 @@ void printLines(const vector<vector<string>> &vec) {
     }    
 }
 
+void processData(vector<vector<string>> &vec) {
+    for(int i = 0; i < vec.size(); i++) {
+        int sumRow = 0;
+        for(int j = 0; j < vec[i].size(); j++) {
+           sumRow += stoi(vec[i][j]); 
+        }
+        cout << "   " << sumRow << endl;
+    } 
+}
+
 int main() {
     ifstream myfile;
     
@@ -46,6 +56,7 @@ int main() {
         }
     }
     printLines(lines);
+    processData(lines);
 
     return 0;
 }
