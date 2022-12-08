@@ -14,11 +14,8 @@ using namespace std;
 
 static string data;
 
-vector<vector<string>> linesBernhard;
-vector<vector<string>> linesJasmina;
-
-vector<string> singleLinesJasmina;
-vector<string> singleLinesBernhard;
+static vector<vector<string>> linesBernhard;
+static vector<vector<string>> linesJasmina;
 
 static int sumBernhard = 0;
 static int sumJasmina = 0;
@@ -26,70 +23,73 @@ static int sumJasmina = 0;
 static int sumBernhardPart2 = 0;
 static int sumJasminaPart2 = 0;
 
-void printLines(const vector<vector<string>> &vec, vector<string> &singleLines) {
+void printLines(const vector<vector<string>> &vec) {
     for(int i = 0; i < vec.size(); i++) {
         for(int j = 0; j < vec[i].size(); j++) {
             cout << vec[i][j] << endl;
-            singleLines.push_back(vec[i][j]);
         }
         cout << endl;
     }    
 }
 
-vector<string>& seperateStringTwoParts(string toSeperate, const char *seperator) {
+void readInData(const string& fileName, vector<vector<string>> &dataDestination) {
+    ifstream myFile;
+    myFile.open(fileName);
+
+    vector<string> paragraph;
+    if(myFile.is_open()) {
+        while(myFile) {
+            if(myFile.eof()) data = "";
+            getline(myFile, data);
+            if(data != "") {
+                paragraph.push_back(data);
+            } else {
+                dataDestination.push_back(paragraph);
+                paragraph.clear();
+            }
+        }
+    }
+}
+
+vector<string> split2DimVec(const vector<vector<string>> &vec) {
+    vector<string> dummy;
+    for(int i = 0; i < vec.size(); i++) {
+        for(int j = 0; j < vec[i].size(); j++) {
+            dummy.push_back(vec[i][j]);
+        }
+    }  
+    return dummy;
+}
+
+vector<string>& seperateString(string toSeperate, const char *seperator) {
     static vector<string> result;
+    result.clear();
     char* dataAsPointer = &toSeperate[0];
-    char* part1 = strtok(dataAsPointer, seperator);
-    result.push_back(part1);
-    char* part2 = strtok(NULL, seperator);
-    result.push_back(part2);
+    char* token = strtok(dataAsPointer, seperator);
+    result.push_back(token);
+    
+    while(token != NULL) {
+        token = strtok(NULL, seperator);
+        if(token != NULL) result.push_back(token);
+    }
     
     return result;
 }
 
-void processData(const vector<string> &vecSingle) {
+void processData(const vector<string> &vecSingle, int &saveVar) {
 
 }
 
 int main() {
-    ifstream myfileB, myfileJ;
-    
-    myfileB.open("bernhard.txt");
-    
-    vector<string> paragraph;
-    
-    if(myfileB.is_open()) {
-        while(myfileB) {
-            if(myfileB.eof()) data = "";
-            getline(myfileB, data);
-            if(data != "") {
-                paragraph.push_back(data);
-            } else {
-                linesBernhard.push_back(paragraph);
-                paragraph.clear();
-            }
-        }
-    }
-    printLines(linesBernhard, singleLinesBernhard);
-    processData(singleLinesBernhard);
+    readInData("bernhard.txt", linesBernhard);
 
-    myfileJ.open("jasmina.txt");
-    
-    if(myfileJ.is_open()) {
-        while(myfileJ) {
-            if(myfileJ.eof()) data = "";
-            getline(myfileJ, data);
-            if(data != "") {
-                paragraph.push_back(data);
-            } else {
-                linesJasmina.push_back(paragraph);
-                paragraph.clear();
-            }
-        }
-    }
+    printLines(linesBernhard);
+    split2DimVec(linesBernhard);
+    processData(split2DimVec(linesBernhard), sumBernhard);
 
-    printLines(linesJasmina, singleLinesJasmina);
-    processData(singleLinesJasmina);
+    readInData("jasmina.txt", linesJasmina);
+    printLines(linesJasmina);
+    processData(split2DimVec(linesJasmina), sumJasmina);
     
     cout << endl << "Bernhard: " << sumBernhard <<  "   " << sumBernhardPart2 << endl;
     cout << "Jasmina: " << sumJasmina << "  " << sumJasminaPart2 << endl;
