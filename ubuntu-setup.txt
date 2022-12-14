@@ -36,7 +36,8 @@ source devel/setup.bash
 echo $ROS_PACKAGE_PATH
 #Installing and Setting up Espressif ESP-IDF
 #Für verschiedene Versionen möglich -> anderer Ordnername
-sudo apt-get install git wget flex bison gperf python3 python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0 -y
+sudo apt-get install git wget flex bison gperf python3 python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0 python3-pip -y
+python3 -m pip install virtualenv
 cd ~ && mkdir esp
 cd esp
 #hier verschiedene Versionen je nach Branch möglich
